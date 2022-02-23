@@ -1,0 +1,101 @@
+
+body{
+    background-color: #0d1238;
+}
+
+
+
+.container-nav{
+    padding-left: 30%;
+    padding-right: 30%;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+
+    margin: 20px 0;
+    border-bottom: 1px solid black;
+    padding-bottom: 20px;
+    border-width: 80%;
+  
+}
+
+.main{
+    width: 60%;
+    margin: auto;
+
+}
+
+.task-cart{
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid black;
+    padding: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.error{
+    color: red;
+}
+
+.bg-green{
+    background-color: greenyellow;
+    color:black
+}
+
+.login-form, .signup-form{
+    max-width: 400px;
+    margin: auto;
+    margin-top:5px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.400);
+    padding: 20px;
+    background-color: white;
+}
+
+
+.container{
+    max-width: 400px;
+    margin: auto;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 8rem;
+}
+
+.font-icon{
+    background: #352CAB;
+background: -webkit-linear-gradient(to right, #352CAB 0%, #62CF19 100%);
+background: -moz-linear-gradient(to right, #352CAB 0%, #62CF19 100%);
+background: linear-gradient(to right, #352CAB 0%, #62CF19 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
+.heading{
+    font-family: 'Open Sans', sans-seri;
+    font-size: 2rem;
+    color: white;
+    margin: 5px;
+    padding: 10px;
+}
+
+.task-container{
+    color: white;
+}
+
+.profile{
+    color: white;
+}
+
+.profile-form{
+    color: white;
+    width:400px;
+}
+
+.profile-image{
+    width:30px;
+    height: 30px;
+    border-radius: 100%;
+    margin-left: 5px;
+}
