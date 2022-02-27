@@ -35,8 +35,6 @@ const hideLoader = (selector,options) => {
 }
 
 
-const createForm = $("#create-form");
-const updateForm = $('#update-form')
-const searchForm = $('#search-form')
+
 
  

@@ -72,7 +72,7 @@ router.get("/api/tasks/:id",apiAuth,async(req,res)=>{
         }
         res.send({error:"Tasks not found !!"});
     }catch(error){
-        res.send(error.message)
+        res.send({error:error.message})
     }
         
 })
@@ -81,11 +81,11 @@ router.get("/api/tasks/:id",apiAuth,async(req,res)=>{
 
 router.patch("/api/tasks/:id",apiAuth,async(req,res)=>{
     const id = req.params.id;
-    
+    const owner = req.session.user._id;
 
     const allowedUpdates = ["description","completed"];
     const updates = Object.keys(req.body);
-    const owner = req.session.user._id;
+    
 
     const isValid = updates.every((key)=>{
         return allowedUpdates.includes(key)

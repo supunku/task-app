@@ -45,7 +45,7 @@ const createTask = async () => {
              });
              const task = await response.json();
              if(task.error){
-                return showError({content:"Something went wrong. Please try again"})
+                return showError({content:task.error})
              };
      
              const taskHtml = generateTaskCard(task);
@@ -74,16 +74,60 @@ const initiateUpdate = async (id) =>{
         const task = await response.json();
 
         if(task.error){
-         return console.log(task.error)
+         return showError(task.error)
         }
         $("#updateDes").val(task.description)
         document.querySelector("#updateCom").checked = task.completed;
-        document.querySelector("#taskid").value = task._id;
+        document.querySelector("#taskId").value = task._id;
         showModal("#update-modal")
     }catch(error){
-        console.log(error)
+        showError({content:"Something went wrong. Please try again"})
     }
 }
+
+
+const updateTask = async () =>{
+    const id = document.querySelector("#taskId").value;
+   
+  hideModal("#update-model");
+  
+  const prevButtonContent = document.querySelector("#task-"+id+" .btn-primary").innerHTML;
+  showLoader("#task-"+id+" .btn-primary",{content:generalLoader});
+
+    const taskData ={
+        description : document.querySelector("#updateDes").value,
+        completed : document.querySelector("#updateCom").checked
+    }
+   
+    try{
+       const response = await fetch("/api/tasks/"+ id,{
+           method : "PATCH",
+           headers :  {
+               "Content-Type" : "application/json"
+           },
+           body: JSON.stringify(taskData)
+       });
+   
+       const task = await response.json();
+   
+       if (task.error){
+           return showError({content:task.error})
+       }
+           $("#task-"+id).removeClass("bg-green");
+           if(task.completed){
+            $("#task-"+id).addClass("bg-green");
+           }
+           
+           $("#task-"+id+"h5").text(task.description);
+          
+   
+           showSuccess({content:"Task updated successfuly"});
+    }catch(error){
+        showError({content:"Something went wrong. Please try again"})
+    }finally{
+        hideLoader("#task-"+id+" .btn-primary",{content:prevButtonContent});
+    }
+   }
 
 const initiateDelete = (id) =>{
     swal({
@@ -101,6 +145,9 @@ const initiateDelete = (id) =>{
 }
 
 const deleteTask= async (id) =>{
+     const prevButtonContent = document.querySelector("#task-"+id+" .btn-danger").innerHTML;
+    console.log(document.querySelector("#task-"+id))
+    showLoader("#task-"+id+" .btn-danger",{content:generalLoader});
     try{
         const response = await fetch("/api/tasks/"+ id,{
             method: "DELETE",
@@ -110,69 +157,39 @@ const deleteTask= async (id) =>{
         });
         const task = await response.json();
         if(task.error){
-            return showError({content:"Something went wrong. Please try again"})
+            return showError({content:task.error})
         }
         $("#task-"+id).remove();
         showSuccess({content:"Task deleted successfuly"})
     }catch(error){
         showError({content:"Something went wrong. Please try again"})
+    }finally{
+        hideLoader("#task-"+id+" .btn-danger",{content:prevButtonContent})
     }
 }
 
-const updateTask = async () =>{
- const id = document.querySelector("#taskid").value;
 
- 
-
- const taskData ={
-     description : document.querySelector("#updateDes").value,
-     completed : document.querySelector("#updateCom").checked
- }
-
- try{
-    const response = await fetch("/api/tasks/"+ id,{
-        method : "PATCH",
-        headers :  {
-            "Content-Type" : "application/json"
-        },
-        body: JSON.stringify(taskData)
-    });
-
-    const task = await response.json();
-
-    if (task.error){
-        return showError({content:"Something went wrong. Please try again"})
-    }
-        $("#task-"+id).removeClass("bg-green");
-        $("#task-"+id).addClass("bg-green");
-        $("#task-"+id+"h5").text(task.description);
-       
-
-        showSuccess({content:"Task updated successfuly"});
- }catch(error){
-     showError({content:"Something went wrong. Please try again"})
- }finally{
-     hideModal("#update-modal")
- }
-}
 
 fetchTasks();
 
 
 const generateTaskCard = (task) =>{
     var status = task.completed ? "bg-green" : "";
-    
+   
     return `
     <div class="task-cart ${status}" id="task-${task._id}">
     <h5>${task.description}</h5>
-    <div class="crud-button">
-        <button class="btn btn-primary" onclick="initiateUpdate('${task._id}')"><i class="fas fa-pen"></i></button>
-        <button class="btn btn-danger"><i class="fas fa-trash" onclick="initiateDelete('${task._id}')"></i></button>
+    <div class="crud-buttons">
+    <button class="btn btn-primary  edit-btn" onclick="initiateUpdate('${task._id}')"><i class="fas fa-edit"></i></button>
+    <button class="btn btn-danger " onclick="initiateDelete('${task._id}')"><i class="fas fa-trash"></i></button>
     </div>
 </div>
     `
 }
 
+const createForm = $("#create-form");
+const updateForm = $('#update-form')
+const searchForm = $('#search-form')
 
 createForm.validate({
     rules:{

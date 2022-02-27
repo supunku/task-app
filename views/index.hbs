@@ -136,12 +136,12 @@
 
 
 
-                setTimeout(() => {
-                    window.location.replace("/tasks")
-                }, 5000)
+
+                window.location.replace("/tasks")
+
 
             } catch (error) {
-                showError("Somathing went wrong. Unable to login")
+                showError("Something went wrong. Unable to login")
                 hideLoader("#btn-login", { content: "Login" })
             }
 

@@ -32,11 +32,11 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{user.name}}
+                        <span id="username">{{user.name}}</span>
                         <img src="/images/{{user.profileImage}}" alt="Profile Image" class="profile-image">
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="/tasks">Tasks</a>
                         <a class="dropdown-item" href="/profile">Profile Settings</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/">Logout</a>
@@ -115,7 +115,7 @@
             var formData = new FormData();
             formData.append("name", $("#name").val())
 
-            console.log(files)
+
 
             if (files.length > 0) {
 
@@ -131,6 +131,8 @@
                 if (user.error) {
                     return showError({ content: user.error })
                 }
+                $("#username").text(user.name);
+                $(".profile-image").attr("src", "/images/" + user.profileImage)
                 showSuccess({ content: "Profile updated successfully" })
             } catch (error) {
                 showError({ content: "Something went wrong. Unable to update profile" })

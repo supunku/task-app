@@ -178,7 +178,7 @@ router.patch("/api/users/",apiAuth,async(req,res)=>{
     });
 
     if(!isValid){
-        return res.send({error:"Invaild Updates"})
+        return res.send({error:"Invalid Updates"})
     }
 
     try{ 
